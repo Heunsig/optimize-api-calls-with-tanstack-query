@@ -10,7 +10,12 @@ app.get("/posts", async (req, res) => {
   const { projectId } = req.query;
   const _projectId = projectId?.toString();
 
-  let foundPosts = [];
+  let foundPosts: Array<{
+    id: string;
+    title: string;
+    content: string;
+    createdAt: string;
+  }> = [];
   if (_projectId) {
     foundPosts = db
       .select({
