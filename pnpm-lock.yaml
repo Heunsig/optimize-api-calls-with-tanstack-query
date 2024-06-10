@@ -10,6 +10,9 @@ importers:
 
   client:
     dependencies:
+      primevue:
+        specifier: ^3.52.0
+        version: 3.52.0(vue@3.4.21)
       vue:
         specifier: ^3.4.21
         version: 3.4.21(typescript@5.4.5)
@@ -2477,6 +2480,14 @@ packages:
       simple-get: 4.0.1
       tar-fs: 2.1.1
       tunnel-agent: 0.6.0
+    dev: false
+
+  /primevue@3.52.0(vue@3.4.21):
+    resolution: {integrity: sha512-HLOVP5YI0ArFKUhIyfZsWmTNMaBYNCBWC/3DYvdd/Po4LY5/WXf7yIYvArE2q/3OuwSXJXvjlR8UNQeJYRSQog==}
+    peerDependencies:
+      vue: ^3.0.0
+    dependencies:
+      vue: 3.4.21(typescript@5.4.5)
     dev: false
 
   /proxy-addr@2.0.7:
