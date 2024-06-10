@@ -1,27 +1,44 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import Dropdown from "primevue/dropdown";
+import { useRouter } from "vue-router";
+import { useProjects } from "@/composables/useProjects";
 
-const selectedCity = ref();
-const cities = ref([
-    { name: 'New York', code: 'NY' },
-    { name: 'Rome', code: 'RM' },
-    { name: 'London', code: 'LDN' },
-    { name: 'Istanbul', code: 'IST' },
-    { name: 'Paris', code: 'PRS' }
-]);
+const router = useRouter();
 
+const selectedProject = ref<string | null>(null);
+
+const { data: projects } = useProjects();
+
+function handleChange() {
+  if (selectedProject.value) {
+    router.push({
+      name: "projects/[projectId]/posts",
+      params: {
+        projectId: selectedProject.value,
+      },
+    });
+  }
+}
 </script>
 
 <template>
   <div class="h-screen -my-6 flex items-center justify-center">
-    <div>
+    <div class="flex flex-col gap-2">
+      <label for="project">Project</label>
       <Dropdown
-        v-model="selectedCity"
-        :options="cities"
-        optionLabel="name"
-        placeholder="Select a City"
-        class="w-full md:w-14rem"
+        v-model="selectedProject"
+        :options="projects"
+        option-label="name"
+        option-value="id"
+        placeholder="Select a project"
+        :pt="{
+          root: {
+            class: 'min-w-52',
+          },
+        }"
+        @change="() => handleChange()"
+        input-id="project"
       />
     </div>
   </div>

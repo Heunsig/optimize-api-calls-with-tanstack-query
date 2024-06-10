@@ -1,6 +1,10 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import Button from "primevue/button";
+import { useRoute } from "vue-router";
+
+const route = useRoute();
+const projectIdParam = computed(() => route.params.projectId.toString());
 
 const title = ref("");
 const content = ref("");
@@ -14,6 +18,7 @@ function createPost() {
     body: JSON.stringify({
       title: title.value,
       content: content.value,
+      projectId: projectIdParam.value,
     }),
   })
     .then((res) => {
@@ -26,6 +31,24 @@ function createPost() {
 </script>
 <template>
   <div>
+    <div class="mb-6">
+      <router-link
+        :to="{
+          name: 'projects/[projectId]/posts',
+          params: {
+            projectId: projectIdParam,
+          }
+        }"
+      >
+        <Button
+          label="Posts"
+          text
+          size="small"
+          icon="pi pi-angle-left"
+          class="px-2"
+        />
+      </router-link>
+    </div>
     <form @submit.prevent>
       <input type="text" placeholder="Title" v-model="title" />
       <textarea placeholder="Content" v-model="content"></textarea>

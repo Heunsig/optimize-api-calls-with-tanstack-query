@@ -13,8 +13,8 @@ POST http://localhost:3000/projects
 Content-Type: application/json
 
 {
-    "name": "Project 3",
-    "description": "Description 3"
+    "name": "Project 2",
+    "description": "Description 2"
 }
 
 ### Update project
