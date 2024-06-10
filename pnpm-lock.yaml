@@ -8,7 +8,7 @@ importers:
 
   .: {}
 
-  '@app/client':
+  client:
     dependencies:
       vue:
         specifier: ^3.4.21
@@ -39,7 +39,7 @@ importers:
         specifier: ^2.0.6
         version: 2.0.6(typescript@5.4.5)
 
-  '@app/server':
+  server:
     dependencies:
       '@paralleldrive/cuid2':
         specifier: ^2.2.2
