@@ -17,30 +17,25 @@ const { projectId } = toRefs(props);
 
 const router = useRouter();
 const toast = useToast();
-const queryClient = useQueryClient();
 
 const menu = ref<InstanceType<typeof Menu> | undefined>(undefined);
 function toggle(event: MouseEvent) {
   menu.value?.toggle(event);
 }
 
-const { mutate } = useMutation({
-  mutationFn: async (postId: string) => {
-    return await deletePost(postId);
-  },
-  onSuccess: () => {
-    queryClient.setQueryData(["posts", projectId.value], (data: Post[]) => {
-      return data.filter((post) => post.id !== props.post.id);
-    });
+async function del(postId: string) {
+  await deletePost(postId);
+  toast.add({
+    severity: "success",
+    summary: "Post Deleted",
+    detail: "Post has been deleted successfully.",
+    life: 3000,
+  });
 
-    toast.add({
-      severity: "success",
-      summary: "Post Deleted",
-      detail: "Post has been deleted successfully.",
-      life: 3000,
-    });
-  },
-});
+  // NOTE: 삭제 후 어떻게 처리 방식 
+  // 1. 삭제 후 새로고침 (API 콜 필요)
+  // 2. 삭제 후 삭제된 아이템의 it emit을 한 다음 PostList.vue에서 삭제 (API 콜 필요 X)
+}
 
 const items = ref([
   {
@@ -60,7 +55,7 @@ const items = ref([
     label: "Remove",
     icon: "pi pi-trash",
     command: () => {
-      mutate(props.post.id);
+      del(props.post.id);
     },
   },
 ]);

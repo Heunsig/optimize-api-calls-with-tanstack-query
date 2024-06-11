@@ -2,17 +2,14 @@
 import { computed, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { createReusableTemplate } from "@vueuse/core";
-import { useMutation } from "@tanstack/vue-query";
 import { createPost } from "@/api/posts.api";
 import { useToast } from "primevue/usetoast";
-import { useQueryClient } from "@tanstack/vue-query";
 import Button from "primevue/button";
 import InputText from "primevue/inputtext";
 import Editor from "primevue/editor";
 
 const [DefineTemplate, FormField] = createReusableTemplate();
 
-const queryClient = useQueryClient();
 const toast = useToast();
 const route = useRoute();
 const router = useRouter();
@@ -21,19 +18,14 @@ const projectIdParam = computed(() => route.params.projectId.toString());
 const title = ref("");
 const content = ref("");
 
-const { mutate, isPending } = useMutation({
-  mutationFn: async (payload: {
-    projectId: string;
-    title: string;
-    content: string;
-  }) => {
-    const { projectId, ..._payload } = payload;
-    return await createPost(projectId, _payload);
-  },
-  onSuccess: () => {
-    queryClient.refetchQueries({
-      queryKey: ["posts", projectIdParam],
-      exact: true,
+const loading = ref(false)
+
+async function submit() {
+  try {
+    loading.value = true;
+    await createPost(projectIdParam.value, {
+      title: title.value,
+      content: content.value,
     });
 
     toast.add({
@@ -49,23 +41,17 @@ const { mutate, isPending } = useMutation({
         projectId: projectIdParam.value,
       },
     });
-  },
-  onError: (error) => {
+    
+  } catch(error) {
     toast.add({
       severity: "error",
       summary: "Form Validation Error",
-      detail: error.message,
+      detail: (error as Error).message,
       life: 3000,
     });
-  },
-});
-
-function submit() {
-  mutate({
-    projectId: projectIdParam.value,
-    title: title.value,
-    content: content.value,
-  });
+  } finally {
+    loading.value = false;
+  }
 }
 </script>
 <template>
@@ -112,7 +98,7 @@ function submit() {
           <Button
             type="submit"
             label="Submit"
-            :loading="isPending"
+            :loading="loading"
             @click="() => submit()"
           />
         </div>

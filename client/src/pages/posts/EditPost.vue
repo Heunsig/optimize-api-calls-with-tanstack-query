@@ -2,17 +2,15 @@
 import { computed, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { createReusableTemplate } from "@vueuse/core";
-import { useMutation, useQueryClient } from "@tanstack/vue-query";
-import { updatePost } from "@/api/posts.api";
+import { getPostById, updatePost } from "@/api/posts.api";
 import { useToast } from "primevue/usetoast";
-import { usePostById } from "@/composables/usePostById";
 import Button from "primevue/button";
 import InputText from "primevue/inputtext";
 import Editor from "primevue/editor";
 
 const [DefineTemplate, FormField] = createReusableTemplate();
 
-const queryClient = useQueryClient();
+// const queryClient = useQueryClient();
 const toast = useToast();
 const route = useRoute();
 const router = useRouter();
@@ -22,39 +20,22 @@ const postIdParam = computed(() => route.params.postId.toString());
 const title = ref("");
 const content = ref("");
 
-// 이렇게도 사용 가능할 것 같음 (참고용)
-// queryClient.resetQueries({
-//   queryKey: ["post", postIdParam],
-//   exact: true,
-// });
+const loading = ref(false);
 
-const { data: post } = usePostById(postIdParam);
-watch(post, async post => {
-  if (post) {
-    title.value = post.title;
-    content.value = post.content;
-  }
-}, { immediate: true });
+async function init() {
+  const post = await getPostById(postIdParam.value);
+  title.value = post.title;
+  content.value = post.content;
+}
 
-const { mutate, isPending } = useMutation({
-  mutationFn: async (payload: {
-    postId: string;
-    title: string;
-    content: string;
-  }) => {
-    const { postId, ..._payload } = payload;
-    return await updatePost(postId, _payload);
-  },
-  onSuccess: async () => {
-    await queryClient.refetchQueries({
-      queryKey: ["posts", projectIdParam],
-      exact: true,
-    });
+init();
 
-    await queryClient.invalidateQueries({
-      queryKey: ["post", postIdParam],
-      exact: true,
-      refetchType: 'none'
+async function submit() {
+  try {
+    loading.value = true;
+    await updatePost(postIdParam.value, {
+      title: title.value,
+      content: content.value,
     });
 
     toast.add({
@@ -70,23 +51,16 @@ const { mutate, isPending } = useMutation({
         projectId: projectIdParam.value,
       },
     });
-  },
-  onError: (error) => {
+  } catch(error) {
     toast.add({
       severity: "error",
       summary: "Form Validation Error",
-      detail: error.message,
+      detail: (error as Error).message,
       life: 3000,
     });
-  },
-});
-
-function submit() {
-  mutate({
-    postId: postIdParam.value,
-    title: title.value,
-    content: content.value,
-  });
+  } finally {
+    loading.value = false;
+  }
 }
 </script>
 <template>
@@ -133,7 +107,7 @@ function submit() {
           <Button
             type="submit"
             label="Submit"
-            :loading="isPending"
+            :loading="loading"
             @click="() => submit()"
           />
         </div>

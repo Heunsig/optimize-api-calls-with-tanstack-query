@@ -2,13 +2,18 @@
 import { ref } from "vue";
 import Dropdown from "primevue/dropdown";
 import { useRouter } from "vue-router";
-import { useProjects } from "@/composables/useProjects";
+import { Project, getProjects } from "@/api/projects.api";
 
 const router = useRouter();
 
 const selectedProject = ref<string | null>(null);
 
-const { data: projects } = useProjects();
+const projects = ref<Array<Project>>([]);
+async function init(){
+  projects.value = await getProjects();
+}
+
+init();
 
 function handleChange() {
   if (selectedProject.value) {
