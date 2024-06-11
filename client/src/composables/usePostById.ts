@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/vue-query";
 import { Ref, watch } from "vue";
 
 export function usePostById(postId: Ref<string>) {
-  const { data, error, isFetching } = useQuery({
+  const { data, error, isFetching, isFetched } = useQuery({
     queryKey: ["post", postId],
     queryFn: async ({ queryKey }) => {
       const res = await getPostById(queryKey[1])
@@ -19,6 +19,7 @@ export function usePostById(postId: Ref<string>) {
 
   return {
     data,
+    isFetched,
     isFetching
   }
 }

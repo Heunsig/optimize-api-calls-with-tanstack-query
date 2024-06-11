@@ -1,3 +1,5 @@
+import { removeUndefinedFromObject } from "@/utils/object.util";
+
 export type Post = {
   id: string;
   title: string;
@@ -40,6 +42,24 @@ export async function createPost(projectId: string, payload: { title: string, co
     }
     
     return json.data;
+}
+
+export async function updatePost(postId: string, payload: { title?: string, content?: string }): Promise<{ updatedId: string }> {
+  const response = await fetch(`/api/posts/${postId}`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(removeUndefinedFromObject(payload)),
+  });
+
+  const json = await response.json();
+
+  if (json.status === "error") {
+    throw new Error(json.message);
+  }
+
+  return json.data;
 }
 
 export async function deletePost(postId: string): Promise<{ deletedId: string }> {

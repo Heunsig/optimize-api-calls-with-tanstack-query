@@ -25,6 +25,11 @@ const routes = [
     path: '/projects/:projectId/posts/:postId',
     name: 'projects/[projectId]/posts/[postId]',
     component: () => import('@/pages/posts/PostDetail.vue')
+  },
+  {
+    path: '/projects/:projectId/posts/:postId/edit',
+    name: 'projects/[projectId]/posts/[postId]/edit',
+    component: () => import('@/pages/posts/EditPost.vue')
   }
 ];
 

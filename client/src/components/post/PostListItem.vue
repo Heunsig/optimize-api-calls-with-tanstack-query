@@ -6,6 +6,7 @@ import Button from "primevue/button";
 import Menu from "primevue/menu";
 import { useMutation, useQueryClient } from "@tanstack/vue-query";
 import { useToast } from "primevue/usetoast";
+import { useRouter } from "vue-router";
 
 const props = defineProps<{
   post: Omit<Post, "content">;
@@ -14,6 +15,7 @@ const props = defineProps<{
 
 const { projectId } = toRefs(props);
 
+const router = useRouter();
 const toast = useToast();
 const queryClient = useQueryClient();
 
@@ -44,6 +46,15 @@ const items = ref([
   {
     label: "Edit",
     icon: "pi pi-pen-to-square",
+    command: () => {
+      router.push({
+        name: "projects/[projectId]/posts/[postId]/edit",
+        params: {
+          projectId: projectId.value,
+          postId: props.post.id,
+        },
+      });
+    },
   },
   {
     label: "Remove",
