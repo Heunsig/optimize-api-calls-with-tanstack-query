@@ -73,6 +73,13 @@ app.get("/posts/:id", async (req, res) => {
 app.post("/posts", async (req, res) => {
   const { projectId, title, content } = req.body;
 
+  if (title === "") {
+    return res.status(400).json({
+      status: "error",
+      message: "Title is required",
+    });
+  }
+
   const [insertedId] = await db
     .insert(posts)
     .values({
