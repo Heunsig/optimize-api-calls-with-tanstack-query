@@ -99,6 +99,13 @@ app.patch("/posts/:id", async (req, res) => {
   const { id } = req.params;
   const { title, content } = req.body;
 
+  if (title === "") {
+    return res.status(400).json({
+      status: "error",
+      message: "Title is required",
+    });
+  }
+
   const [updatedId] = await db
     .update(posts)
     .set({
