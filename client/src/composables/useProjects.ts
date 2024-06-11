@@ -9,6 +9,7 @@ export function useProjects() {
       const res = await getProjects()
       return res
     },
+    staleTime: 1000 * 60 * 5,
   });
 
   watch(error, error => {

@@ -9,6 +9,7 @@ export function usePosts(projectId: Ref<string>) {
       const res = await getPosts(queryKey[1])
       return res
     },
+    staleTime: 1000 * 60 * 5,
   });
 
   watch(error, error => {

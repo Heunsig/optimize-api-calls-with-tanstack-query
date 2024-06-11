@@ -12,10 +12,11 @@
 
 @layer base {
   html {
+    font-size: 87.5%;
     line-height: normal;
   }
 
-  html, body {
-    font-size: 87.5%;
+  body {
+    background-color: var(--surface-ground);
   }
 }

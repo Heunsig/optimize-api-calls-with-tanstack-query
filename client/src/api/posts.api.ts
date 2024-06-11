@@ -20,3 +20,24 @@ export async function getPostById(postId: string): Promise<Post> {
   const post = await response.json();
   return post.data;
 }
+
+export async function createPost(projectId: string, payload: { title: string, content: string }): Promise<{insertedId: string}> {
+    const response = await fetch(`/api/posts`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        ...payload,
+        projectId: projectId,
+      }),
+    });
+
+    const json = await response.json();
+
+    if (json.status === "error") {
+      throw new Error(json.message);
+    }
+    
+    return json.data;
+}
