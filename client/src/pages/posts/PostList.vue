@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { computed } from "vue";
-import { useProjects } from "@/composables/useProjects";
-import Button from "primevue/button";
 import { useRoute } from "vue-router";
+import { useProjects } from "@/composables/useProjects";
 import { usePosts } from "@/composables/usePosts";
-import { convertUTCToLocalTime } from "@/utils/date.util";
+import Button from "primevue/button";
+import PostListItem from "@/components/post/PostListItem.vue";
 
 const route = useRoute();
 const projectIdParam = computed(() => route.params.projectId.toString());
@@ -47,28 +47,11 @@ const { data: posts } = usePosts(projectIdParam);
       </router-link>
     </div>
     <div class="flex flex-col gap-2">
-      <div
+      <PostListItem 
         v-for="post in posts" :key="post.id"
-        class="bg-[--surface-card] rounded-md py-6 px-6"
-      >
-        <div class="flex justify-between gap-3">
-          <div>
-            <router-link
-              :to="{
-                name: 'projects/[projectId]/posts/[postId]',
-                params: {
-                  projectId: projectIdParam,
-                  postId: post.id,
-                }
-              }"
-              class="hover:underline"
-            >
-              {{ post.title }}
-            </router-link>
-          </div>
-          <div class="flex-shrink-0">{{ convertUTCToLocalTime(post.createdAt) }}</div>
-        </div>
-      </div>
+        :post="post"
+        :projectId="projectIdParam"
+      />
     </div>
   </div>
 </template>

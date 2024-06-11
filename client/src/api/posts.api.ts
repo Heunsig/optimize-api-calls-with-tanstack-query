@@ -1,4 +1,4 @@
-type Post = {
+export type Post = {
   id: string;
   title: string;
   content: string;
@@ -40,4 +40,14 @@ export async function createPost(projectId: string, payload: { title: string, co
     }
     
     return json.data;
+}
+
+export async function deletePost(postId: string): Promise<{ deletedId: string }> {
+  const response = await fetch(`/api/posts/${postId}`, {
+    method: 'DELETE',
+  });
+
+  const json = await response.json();
+
+  return json.data
 }
