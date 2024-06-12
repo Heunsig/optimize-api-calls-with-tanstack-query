@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import Toast from 'primevue/toast';
+import { VueQueryDevtools } from '@tanstack/vue-query-devtools'
 </script>
 
 <template>
@@ -15,5 +16,6 @@ import Toast from 'primevue/toast';
       }"
     />
   </div>
+  <VueQueryDevtools/>
 </template>
 
