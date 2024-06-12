@@ -10,7 +10,7 @@
 ## 비교 프로젝트
 TanStack Query를 사용하지 않은 프로젝트와 비교하려면 `without-tanstack-query` 브랜치를 참고하세요.
 
-### Backend API 명세
+## Backend API 명세
 #### Project 리스트 조회
 - URL: `/api/projects`
 - Method: `GET`
