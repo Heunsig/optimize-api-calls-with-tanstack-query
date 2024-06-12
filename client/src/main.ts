@@ -4,9 +4,16 @@ import App from "./App.vue";
 import { router } from "./router";
 import PrimeVue from "primevue/config";
 import { VueQueryPlugin } from "@tanstack/vue-query";
-import ToastService from 'primevue/toastservice';
+import ToastService from "primevue/toastservice";
+import ConfirmationService from "primevue/confirmationservice";
 
 import "primevue/resources/themes/aura-dark-noir/theme.css";
-import 'primeicons/primeicons.css'
+import "primeicons/primeicons.css";
 
-createApp(App).use(PrimeVue).use(VueQueryPlugin).use(ToastService).use(router).mount("#app");
+createApp(App)
+  .use(PrimeVue)
+  .use(VueQueryPlugin)
+  .use(ConfirmationService)
+  .use(ToastService)
+  .use(router)
+  .mount("#app");

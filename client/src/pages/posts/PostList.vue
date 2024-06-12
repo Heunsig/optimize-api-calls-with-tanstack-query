@@ -57,12 +57,21 @@ init();
       </router-link>
     </div>
     <div class="flex flex-col gap-2">
-      <PostListItem
-        v-for="post in posts"
-        :key="post.id"
-        :post="post"
-        :projectId="projectIdParam"
-      />
+      <template v-if="!posts || posts.length === 0">
+        <div
+          class="text-center bg-[--surface-card] p-4 rounded-md text-[--surface-300]"
+        >
+          No posts found
+        </div>
+      </template>
+      <template v-else>
+        <PostListItem
+          v-for="post in posts"
+          :key="post.id"
+          :post="post"
+          :projectId="projectIdParam"
+        />
+      </template>
     </div>
   </div>
 </template>

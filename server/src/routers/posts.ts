@@ -73,7 +73,7 @@ app.get("/posts/:id", async (req, res) => {
 app.post("/posts", async (req, res) => {
   const { projectId, title, content } = req.body;
 
-  if (title === "") {
+  if (title === "" || title === undefined || title === null) {
     return res.status(400).json({
       status: "error",
       message: "Title is required",
@@ -99,7 +99,7 @@ app.patch("/posts/:id", async (req, res) => {
   const { id } = req.params;
   const { title, content } = req.body;
 
-  if (title === "") {
+  if (title === "" || title === undefined || title === null) {
     return res.status(400).json({
       status: "error",
       message: "Title is required",
