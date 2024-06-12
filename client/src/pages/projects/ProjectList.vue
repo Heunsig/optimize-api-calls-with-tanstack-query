@@ -32,9 +32,9 @@ function openManageProjectDialog() {
 
 <template>
   <div class="h-screen -my-6 flex items-center justify-center">
-    <div class="flex flex-col gap-2">
+    <div class="flex flex-col gap-2 w-80">
       <div class="flex items-center">
-        <label for="project">Project</label>
+        <label for="project" class="text-lg">Project</label>
         <div class="flex-grow"></div>
         <Button
           icon="pi pi-cog"
