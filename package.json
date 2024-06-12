@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "db:setup": "pnpm --filter @demo/server migrate",
     "dev:client": "pnpm --filter @demo/client dev",
     "dev:server": "pnpm --filter @demo/server dev",
     "dev": "pnpm --filter @demo/* dev"
