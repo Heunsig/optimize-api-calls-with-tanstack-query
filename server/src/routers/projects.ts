@@ -46,6 +46,13 @@ app.get("/projects/:id", async (req, res) => {
 app.post("/projects", async (req, res) => {
   const { name, description } = req.body;
 
+  if(name === undefined || name === null || name === "") {
+    return res.status(400).json({
+      status: "error",
+      message: "Name is required",
+    });
+  }
+
   const [insertedId] = await db
     .insert(projects)
     .values({
