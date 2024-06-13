@@ -125,6 +125,7 @@ TanStack Query를 사용하지 않은 프로젝트와 비교하려면 `without-t
 - Request:
   ```json
   {
+    "projectId": 1,
     "title": "Post 1",
     "content": "Content 1", // (Optional)
   }
