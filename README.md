@@ -7,6 +7,10 @@
 3. `pnpm run db:setup`으로 데이터베이스를 설정합니다.
 4. `pnpm run dev`로 프로젝트를 실행합니다.
 
+### DB 초기화
+이 프로젝트는 SQLite를 사용합니다. 데이터베이스를 초기화하려면 `./server/sqlite.db` 파일을 삭제하고, `pnpm run db:setup`을 실행하세요.
+
+
 ## 비교 프로젝트
 TanStack Query를 사용하지 않은 프로젝트와 비교하려면 `without-tanstack-query` 브랜치를 참고하세요.
 
