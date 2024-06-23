@@ -64,7 +64,7 @@ POST http://localhost:3000/signup
 Content-Type: application/json
 
 {
-    "email": "heu222n233244@gmail.com",
+    "email": "123@gmail.com",
     "password": "qwe123!@#"
 }
 
@@ -73,7 +73,7 @@ POST http://localhost:3000/signin
 Content-Type: application/json
 
 {
-    "email": "heu2n233244@gmail.com",
+    "email": "123@gmail.com",
     "password": "qwe123!@#"
 }
 
