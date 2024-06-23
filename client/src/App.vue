@@ -1,21 +1,36 @@
 <script setup lang="ts">
 import Toast from 'primevue/toast';
 import { VueQueryDevtools } from '@tanstack/vue-query-devtools'
+import { onErrorCaptured } from 'vue';
+import { UnauthorizedError } from './errors/UnauthorizedError';
+import { useRoute, useRouter } from 'vue-router';
+
+const route = useRoute();
+const router = useRouter();
+
+onErrorCaptured((error) => {
+  if (error instanceof UnauthorizedError) {
+    router.push({
+      name: 'signin',
+      query: {
+        redirect: route.fullPath
+      }
+    })
+  }
+
+  return false;
+});
 </script>
 
 <template>
-  <div 
-    class="w-full sm:w-2/5 sm:max-w-[50rem] sm:min-w-[35rem] m-auto px-4 py-6">
-    <router-view/>
-
-    <Toast 
-      :pt="{
-        content: {
-          class: 'border-none'
-        }
-      }"
-    />
-  </div>
+  <router-view />
+  <Toast 
+    :pt="{
+      content: {
+        class: 'border-none'
+      }
+    }"
+  />
   <VueQueryDevtools/>
 </template>
 

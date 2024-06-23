@@ -1,3 +1,5 @@
+import { UnauthorizedError } from "@/errors/UnauthorizedError";
+
 export type Project = {
   id: string;
   name: string;
@@ -7,8 +9,19 @@ export type Project = {
 
 export async function getProjects(): Promise<Project[]> {
   const response = await fetch("/api/projects");
-  const data = await response.json();
-  return data.data;
+  const json = await response.json();
+  
+  const status = response.status
+  
+  if (json.status === "error") {
+    if (status === 401) {
+      throw new UnauthorizedError(json.message);
+    }
+
+    throw new Error(json.message);
+  }
+
+  return json.data;
 }
 
 export async function createProject(project: {
@@ -23,9 +36,14 @@ export async function createProject(project: {
     body: JSON.stringify(project),
   });
 
+  const status = response.status
   const json = await response.json();
   
   if (json.status === "error") {
+    if (status === 401) {
+      throw new UnauthorizedError(json.message);
+    }
+
     throw new Error(json.message);
   }
 
@@ -39,6 +57,16 @@ export async function deleteProject(
     method: "DELETE",
   });
 
-  const data = await response.json();
-  return data.data;
+  const status = response.status
+  const json = await response.json();
+
+  if (json.status === "error") {
+    if (status === 401) {
+      throw new UnauthorizedError(json.message);
+    }
+
+    throw new Error(json.message);
+  }
+
+  return json.data;
 }
