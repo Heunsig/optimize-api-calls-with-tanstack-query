@@ -3,8 +3,10 @@ import { db } from "../../db/connection";
 import { projects, posts } from "../../db/schema";
 import { eq, isNull, and } from "drizzle-orm";
 import { formatDate } from "../utils/date.util";
+import { isAuthenticated } from '../middleware/authentication-middleware';
 
 const app = express.Router();
+app.use([isAuthenticated]);
 
 app.get("/projects", async (req, res) => {
   const foundProjects = db

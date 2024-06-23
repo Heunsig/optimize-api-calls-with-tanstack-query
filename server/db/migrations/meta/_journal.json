@@ -8,6 +8,13 @@
       "when": 1717917324032,
       "tag": "0000_lazy_scorpion",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1719104266349,
+      "tag": "0001_loud_clint_barton",
+      "breakpoints": true
     }
   ]
 }

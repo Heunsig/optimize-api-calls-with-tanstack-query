@@ -1,10 +1,12 @@
-import express from 'express'
+import express from "express";
 import { db } from "../../db/connection";
 import { projects, posts } from "../../db/schema";
 import { eq, isNull, and } from "drizzle-orm";
 import { formatDate } from "../utils/date.util";
+import { isAuthenticated } from "../middleware/authentication-middleware";
 
 const app = express.Router();
+app.use([isAuthenticated]);
 
 app.get("/posts", async (req, res) => {
   const { projectId } = req.query;
