@@ -56,27 +56,3 @@ Content-Type: application/json
 
 ### Delete post
 DELETE http://localhost:3000/posts/awyt15p9hz24r8pk5l9di1xd
-
-
-
-### signup
-POST http://localhost:3000/signup
-Content-Type: application/json
-
-{
-    "email": "heu222n233244@gmail.com",
-    "password": "qwe123!@#"
-}
-
-### signin
-POST http://localhost:3000/signin
-Content-Type: application/json
-
-{
-    "email": "heu2n233244@gmail.com",
-    "password": "qwe123!@#"
-}
-
-### signout
-POST http://localhost:3000/signout
-Content-Type: application/json
