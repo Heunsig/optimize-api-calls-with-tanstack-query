@@ -4,11 +4,7 @@ import { db } from "../../db/connection";
 import { randomBytes, scrypt as _scrypt } from "crypto";
 import { promisify } from "util";
 import { users } from "../../db/schema";
-import {
-  isAuthorized,
-  isNotAuthenticated,
-} from "../middleware/auth-middleware";
-import { fromError } from "zod-validation-error";
+import { isAuthenticated, isNotAuthenticated } from "../middleware/authentication-middleware";
 
 const app = express.Router();
 
@@ -19,14 +15,15 @@ const authInfoSchema = z.object({
   password: z.string().min(8),
 });
 
+
+
 app.post("/signup", async (req, res) => {
   const parsedBody = authInfoSchema.safeParse(req.body);
 
   if (!parsedBody.success) {
-    const validationError = fromError(parsedBody.error);
     return res.status(400).json({
       status: "error",
-      message: validationError.toString(),
+      message: parsedBody.error.errors,
     });
   }
 
@@ -69,10 +66,9 @@ app.post("/signup", async (req, res) => {
 app.post("/signin", [isNotAuthenticated], async (req, res) => {
   const parsedBody = authInfoSchema.safeParse(req.body);
   if (!parsedBody.success) {
-    const validationError = fromError(parsedBody.error);
     return res.status(400).json({
       status: "error",
-      message: validationError.toString(),
+      message: parsedBody.error.errors,
     });
   }
 
@@ -89,7 +85,7 @@ app.post("/signin", [isNotAuthenticated], async (req, res) => {
   if (!user) {
     return res.status(400).json({
       status: "error",
-      message: "Invalid user info",
+      message: "User not found",
     });
   }
 
@@ -99,7 +95,7 @@ app.post("/signin", [isNotAuthenticated], async (req, res) => {
   if (storedHash !== hash.toString("hex")) {
     return res.status(400).json({
       status: "error",
-      message: "Invalid user info",
+      message: "Invalid password",
     });
   }
 
@@ -111,7 +107,7 @@ app.post("/signin", [isNotAuthenticated], async (req, res) => {
   });
 });
 
-app.post("/signout", [isAuthorized], (req, res) => {
+app.post("/signout", [isAuthenticated], (req, res) => {
   req.session.destroy(() => {
     console.log("Session destroyed");
   });
@@ -120,14 +116,5 @@ app.post("/signout", [isAuthorized], (req, res) => {
     status: "success",
   });
 });
-
-app.get('/me', [isAuthorized], (req, res) => {
-  return res.json({
-    status: "success",
-    data: {
-      email: req.session.userEmail,
-    }
-  });
-})
 
 export default app;
